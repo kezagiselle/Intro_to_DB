@@ -1,7 +1,6 @@
 import mysql.connector
 
--- //database connection setup
-
+# Database connection setup
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
@@ -10,23 +9,22 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
--- create the database
+# Create the database
 mycursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")    
 mycursor.execute("USE alx_book_store")
 
--- create tables
-
+# Create tables
 mycursor.execute("""
 CREATE TABLE IF NOT EXISTS Authors (
     author_id INT AUTO_INCREMENT PRIMARY KEY,
-    author_name VARCHAR(100) NOT NULL
+    author_name VARCHAR(215) NOT NULL
 )
 """)
 
 mycursor.execute("""
 CREATE TABLE IF NOT EXISTS Books (
     book_id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(200) NOT NULL,
+    title VARCHAR(130) NOT NULL,
     author_id INT,
     price DOUBLE,
     publication_date DATE,
@@ -37,9 +35,18 @@ CREATE TABLE IF NOT EXISTS Books (
 mycursor.execute("""
 CREATE TABLE IF NOT EXISTS Customers (
     customer_id INT AUTO_INCREMENT PRIMARY KEY,
-    customer_name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL UNIQUE
+    customer_name VARCHAR(215) NOT NULL,
+    email VARCHAR(215) NOT NULL UNIQUE,
     address TEXT
+)
+""")
+
+mycursor.execute("""
+CREATE TABLE IF NOT EXISTS Orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
 )
 """)
 
@@ -50,11 +57,14 @@ CREATE TABLE IF NOT EXISTS Order_Details (
     book_id INT,
     quantity DOUBLE,
     FOREIGN KEY (order_id) REFERENCES Orders(order_id),
-    FOREIGN KEY (book_id) REFERENCES Books(book_id
+    FOREIGN KEY (book_id) REFERENCES Books(book_id)
 )
 """)
 
-print("All tables created successfully!")
+print("✅ All tables created successfully!")
+
+
+
 
 
 # Insert authors
